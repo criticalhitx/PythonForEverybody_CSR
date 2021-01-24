@@ -1,0 +1,55 @@
+#Artist Table
+CREATE TABLE "Artist" (
+	"id"	INTEGER NOT NULL,
+	"name"	TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+
+#Genre Table
+CREATE TABLE "Genre" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"name"	TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+
+#Album TABLE, artist_id table is Foreign key refering to Artist
+CREATE TABLE Album (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    artist_id INTEGER,
+    title TEXT
+)
+
+#Track Table.. album_id and genre_id is 
+CREATE TABLE Track (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    title TEXT,
+    album_id INTEGER,
+    genre_id INTEGER,
+    len INTEGER, rating INTEGER, count INTEGER
+)
+
+# Insertion
+INSERT into Artist (name) VALUES('Led Zepplin')
+INSERT into Artist (name) VALUES('AC/DC')
+INSERT into Genre (name) VALUES('Rock')
+INSERT into Genre (name) VALUES('Metal')
+
+#Insertion into table with foreign key
+INSERT into Album (title,artist_id) VALUES ('Who Made Who', 2) #last param is artist id AC/DC
+INSERT into Album (title,artist_id) VALUES ('IV', 1) #last param is artist id Led Zepplin
+
+INSERT into Track (title,rating,len,count,album_id,genre_id) VALUES ('Black Dog',5,297,0,2,1);
+INSERT into Track (title,rating,len,count,album_id,genre_id) VALUES ('Stairway',5,482,0,2,1);
+INSERT into Track (title,rating,len,count,album_id,genre_id) VALUES ('About to Rock',5,313,0,1,2);
+INSERT into Track (title,rating,len,count,album_id,genre_id) VALUES ('Who Made Who',5,207,0,1,2)
+
+#JOIN, make how enduser want to see
+SELECT Album.title, Artist.name FROM Album JOIN Artist ON Album.artist_id=Artist.id #foreign key mapping to primary key on other table
+
+SELECT Album.title, Album.artist_id, Artist.id, Artist.name FROM Album JOIN Artist ON Album.artist_id=Artist.id
+
+SELECT Track.title, Genre.name from Track JOIN Genre ON Track.genre_id = Genre.id
+
+SELECT Track.title, Artist.name, Album.title, Genre.name FROM
+Track join Genre join Album join Artist on Track.genre_id = Genre.id AND 
+Track.album_id = Album.id AND Album.artist_id=Artist.id
